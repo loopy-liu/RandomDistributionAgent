@@ -1,3 +1,4 @@
+import os
 from __future__ import annotations
 import json
 import math
@@ -22,12 +23,15 @@ from agent_core.registry import DistributionRegistry
 from agent_core.service import SimulationService
 from agent_core.xml_exporter import to_xml_element
 
+
+
 BASE_DIR = Path(__file__).parent
+
 DATABASE_PATH = BASE_DIR / "data" / "agent.sqlite3"
 EXTENSIONS_DIR = BASE_DIR / "extensions"
 MAX_SAMPLES = 100_000
 
-
+DB_URI = os.environ.get("SUPABASE_DB_URI", str(DATABASE_PATH))
 # ============== 全局视觉美化 ==============
 def apply_custom_style():
     st.markdown(
@@ -138,7 +142,7 @@ CHINESE_FONT_NAME = configure_matplotlib_chinese_font()
 
 
 def build_runtime():
-    db = DatabaseAdapter(DATABASE_PATH)
+    db = DatabaseAdapter(DB_URI)
     repository = CustomDistributionRepository(db)
     user_repo = UserRepository(db)
     audit_repo = AuditLogRepository(db)
