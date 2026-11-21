@@ -23,7 +23,7 @@ class DatabaseAdapter:
     @contextmanager
     def connect(self):
         if self.is_postgres:
-            conn = psycopg2.connect(self.pg_uri)
+            conn = psycopg2.connect(self.pg_uri, sslmode='require')
             conn.cursor_factory = RealDictCursor
             try:
                 yield conn
